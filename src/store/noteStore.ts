@@ -107,16 +107,22 @@ export const useFilteredNotes = () => {
     .sort((a, b) => {
       let comparison = 0;
       
+      // Ensure dates are Date objects
+      const aDate = new Date(a.updatedAt);
+      const bDate = new Date(b.updatedAt);
+      const aCreatedDate = new Date(a.createdAt);
+      const bCreatedDate = new Date(b.createdAt);
+      
       switch (sortBy) {
         case 'title':
           comparison = a.title.localeCompare(b.title);
           break;
         case 'createdAt':
-          comparison = a.createdAt.getTime() - b.createdAt.getTime();
+          comparison = aCreatedDate.getTime() - bCreatedDate.getTime();
           break;
         case 'updatedAt':
         default:
-          comparison = a.updatedAt.getTime() - b.updatedAt.getTime();
+          comparison = aDate.getTime() - bDate.getTime();
           break;
       }
       

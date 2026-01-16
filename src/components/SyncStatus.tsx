@@ -17,6 +17,12 @@ export function SyncStatus() {
   }, []);
 
   const handleSignIn = async () => {
+    // Check if running in demo mode
+    if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+      alert('To use Google Drive sync, configure your Google Client ID in the environment variables.\n\nFor demo purposes, you can:\n1. Go to Google Cloud Console\n2. Create OAuth 2.0 credentials\n3. Add your Client ID to .env.local\n\nSee README for detailed instructions.');
+      return;
+    }
+    
     await googleDriveSync.signIn();
   };
 
@@ -51,20 +57,29 @@ export function SyncStatus() {
         onClick={() => setShowMenu(!showMenu)}
         className={cn(
           'flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors touch-manipulation min-h-[44px]',
-          syncStatus.isSignedIn 
-            ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
-            : 'bg-muted hover:bg-muted/80'
+          !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID 
+            ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-800'
+            : syncStatus.isSignedIn 
+              ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+              : 'bg-muted hover:bg-muted/80'
         )}
       >
         {syncStatus.isSyncing ? (
           <RefreshCw className="w-4 h-4 animate-spin" />
+        ) : !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+          <AlertCircle className="w-4 h-4" />
         ) : syncStatus.isSignedIn ? (
           <Cloud className="w-4 h-4" />
         ) : (
           <CloudOff className="w-4 h-4" />
         )}
         <span className="hidden xs:inline sm:inline">
-          {syncStatus.isSignedIn ? 'Synced' : 'Offline'}
+          {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID 
+            ? 'Demo' 
+            : syncStatus.isSignedIn 
+              ? 'Synced' 
+              : 'Offline'
+          }
         </span>
       </button>
 
@@ -84,13 +99,20 @@ export function SyncStatus() {
               
               {/* Status */}
               <div className="flex items-center gap-2 mb-4">
-                {syncStatus.isSignedIn ? (
+                {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+                  <AlertCircle className="w-4 h-4 text-yellow-600" />
+                ) : syncStatus.isSignedIn ? (
                   <CheckCircle className="w-4 h-4 text-green-600" />
                 ) : (
                   <AlertCircle className="w-4 h-4 text-yellow-600" />
                 )}
                 <span className="text-sm text-muted-foreground">
-                  {syncStatus.isSignedIn ? 'Connected to Google Drive' : 'Not connected'}
+                  {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID 
+                    ? 'Demo Mode - Configure Google Client ID' 
+                    : syncStatus.isSignedIn 
+                      ? 'Connected to Google Drive' 
+                      : 'Not connected'
+                  }
                 </span>
               </div>
 
@@ -108,7 +130,15 @@ export function SyncStatus() {
 
               {/* Actions */}
               <div className="flex flex-col gap-2">
-                {!syncStatus.isSignedIn ? (
+                {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+                  <button
+                    onClick={handleSignIn}
+                    className="flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors touch-manipulation min-h-[44px]"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    Configure Google Sync
+                  </button>
+                ) : !syncStatus.isSignedIn ? (
                   <button
                     onClick={handleSignIn}
                     disabled={syncStatus.isSyncing}
@@ -143,7 +173,10 @@ export function SyncStatus() {
               {/* Info */}
               <div className="mt-4 pt-4 border-t border-border">
                 <p className="text-xs text-muted-foreground">
-                  Your notes are stored in Google Drive under "App Data" and are only accessible by this app.
+                  {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID 
+                    ? 'Configure your Google Client ID to enable sync across devices. See README for setup instructions.'
+                    : 'Your notes are stored in Google Drive under "App Data" and are only accessible by this app.'
+                  }
                 </p>
               </div>
             </div>

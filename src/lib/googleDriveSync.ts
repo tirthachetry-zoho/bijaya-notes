@@ -32,7 +32,7 @@ class GoogleDriveSync {
 
   constructor() {
     this.config = {
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'demo-client-id',
       discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
       scope: 'https://www.googleapis.com/auth/drive.file',
     };
@@ -41,12 +41,9 @@ class GoogleDriveSync {
   // Initialize Google APIs
   async initialize(): Promise<void> {
     try {
-      // Check if credentials are provided
-      if (!this.config.clientId) {
-        console.warn('Google Drive client ID not provided. Sync functionality will be disabled.');
-        this.status.error = 'Google Drive client ID not configured';
-        this.notifyListeners();
-        return;
+      // Always proceed - demo mode if no client ID provided
+      if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+        console.info('Running in demo mode - configure NEXT_PUBLIC_GOOGLE_CLIENT_ID for production use');
       }
 
       await this.loadGapi();

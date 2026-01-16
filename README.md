@@ -49,7 +49,7 @@ A modern, tablet-first, installable note-taking application built with Next.js a
    cp .env.example .env.local
    ```
    
-   Edit `.env.local` and add your Google Client ID:
+   The app works immediately in demo mode. To enable real sync:
    ```env
    NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id_here
    ```
@@ -61,7 +61,15 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Google Drive Setup
+## Usage
+
+### Demo Mode (No Configuration Required)
+
+The app works immediately out of the box! Google Drive sync will show in "Demo Mode" until you configure your Google Client ID. You can still use all note-taking features locally.
+
+### Google Drive Setup (Optional)
+
+To enable real sync across devices:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select an existing one

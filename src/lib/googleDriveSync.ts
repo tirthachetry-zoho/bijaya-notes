@@ -43,13 +43,21 @@ class GoogleDriveSync {
   // Initialize Google APIs
   async initialize(): Promise<void> {
     try {
+      // Check if credentials are provided
+      if (!this.config.clientId || !this.config.apiKey) {
+        console.warn('Google Drive credentials not provided. Sync functionality will be disabled.');
+        this.status.error = 'Google Drive credentials not configured';
+        this.notifyListeners();
+        return;
+      }
+
       await this.loadGapi();
       await this.loadGapiAuth();
       await this.initializeGapiClient();
       await this.updateSigninStatus();
     } catch (error) {
       console.error('Failed to initialize Google Drive sync:', error);
-      this.status.error = 'Failed to initialize Google Drive';
+      this.status.error = 'Failed to initialize Google Drive sync';
       this.notifyListeners();
     }
   }
@@ -80,9 +88,23 @@ class GoogleDriveSync {
   }
 
   private async updateSigninStatus(): Promise<void> {
-    const isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
-    this.status.isSignedIn = isSignedIn;
-    this.notifyListeners();
+    try {
+      const authInstance = window.gapi?.auth2?.getAuthInstance();
+      if (!authInstance) {
+        this.status.isSignedIn = false;
+        this.notifyListeners();
+        return;
+      }
+      
+      const isSignedIn = authInstance.isSignedIn.get();
+      this.status.isSignedIn = isSignedIn;
+      this.notifyListeners();
+    } catch (error) {
+      console.error('Failed to update sign-in status:', error);
+      this.status.isSignedIn = false;
+      this.status.error = 'Failed to check authentication status';
+      this.notifyListeners();
+    }
   }
 
   // Sign in to Google
@@ -92,7 +114,12 @@ class GoogleDriveSync {
       this.status.error = null;
       this.notifyListeners();
 
-      await window.gapi.auth2.getAuthInstance().signIn();
+      const authInstance = window.gapi?.auth2?.getAuthInstance();
+      if (!authInstance) {
+        throw new Error('Google API not initialized');
+      }
+      
+      await authInstance.signIn();
       await this.updateSigninStatus();
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -107,7 +134,10 @@ class GoogleDriveSync {
   // Sign out from Google
   async signOut(): Promise<void> {
     try {
-      await window.gapi.auth2.getAuthInstance().signOut();
+      const authInstance = window.gapi?.auth2?.getAuthInstance();
+      if (authInstance) {
+        await authInstance.signOut();
+      }
       await this.updateSigninStatus();
       this.status.lastSync = null;
     } catch (error) {

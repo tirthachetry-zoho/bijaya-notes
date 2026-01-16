@@ -11,6 +11,7 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - 📱 **Tablet-first responsive design** with split-view layout
 - 🌙 **Dark/Light theme support** with system preference detection
 - 📲 **Installable PWA** - works offline and can be installed on tablets
+- ☁️ **Google Drive sync** - sync your notes across devices with conflict resolution
 - 🎯 **Touch-friendly interface** with 44px minimum tap targets
 - 🔄 **Offline-first** - no internet connection required
 
@@ -27,22 +28,52 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+ and npm
+- Google Cloud Project (for sync functionality)
 
 ### Installation
 
-1. Install dependencies:
-```bash
-npm install
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tirthachetry-zoho/bijaya-notes.git
+   cd bijaya-notes
+   ```
 
-2. Run the development server:
-```bash
-npm run dev
-```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. Set up Google Drive sync (optional):
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Edit `.env.local` and add your Google credentials:
+   ```env
+   NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id_here
+   NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Google Drive Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the **Google Drive API**
+4. Create OAuth 2.0 credentials:
+   - Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
+   - Select "Web application"
+   - Add authorized JavaScript origins:
+     - `http://localhost:3000` (development)
+     - `https://your-domain.com` (production)
+5. Copy the Client ID and API Key to your `.env.local` file
 
 ## Building for Production
 

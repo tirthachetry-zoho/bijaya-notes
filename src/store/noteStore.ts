@@ -3,6 +3,29 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { Note, NoteStore, NoteFormData } from '@/types';
 import { generateId } from '@/lib/utils';
 import { storage } from '@/lib/storage';
+import { googleDriveSync } from '@/lib/googleDriveSync';
+
+// Merge local and remote notes, preferring the most recently updated version
+function mergeNotes(localNotes: Note[], remoteNotes: Note[]): Note[] {
+  const noteMap = new Map<string, Note>();
+  
+  // Add all local notes
+  localNotes.forEach(note => {
+    noteMap.set(note.id, note);
+  });
+  
+  // Merge with remote notes, keeping the most recent version
+  remoteNotes.forEach(remoteNote => {
+    const localNote = noteMap.get(remoteNote.id);
+    if (!localNote || new Date(remoteNote.updatedAt) > new Date(localNote.updatedAt)) {
+      noteMap.set(remoteNote.id, remoteNote);
+    }
+  });
+  
+  return Array.from(noteMap.values()).sort((a, b) => 
+    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+}
 
 export const useNoteStore = create<NoteStore>()(
   persist(
@@ -27,6 +50,13 @@ export const useNoteStore = create<NoteStore>()(
         set((state) => {
           const updatedNotes = [newNote, ...state.notes];
           storage.saveNotes(updatedNotes);
+          
+          // Auto-sync to Google Drive if signed in
+          const syncStatus = googleDriveSync.getStatus();
+          if (syncStatus.isSignedIn) {
+            googleDriveSync.uploadNotes(updatedNotes).catch(console.error);
+          }
+          
           return {
             notes: updatedNotes,
             selectedNoteId: newNote.id,
@@ -47,6 +77,13 @@ export const useNoteStore = create<NoteStore>()(
           );
           
           storage.saveNotes(updatedNotes);
+          
+          // Auto-sync to Google Drive if signed in
+          const syncStatus = googleDriveSync.getStatus();
+          if (syncStatus.isSignedIn) {
+            googleDriveSync.uploadNotes(updatedNotes).catch(console.error);
+          }
+          
           return { notes: updatedNotes };
         });
       },
@@ -56,11 +93,41 @@ export const useNoteStore = create<NoteStore>()(
           const updatedNotes = state.notes.filter((note) => note.id !== id);
           storage.saveNotes(updatedNotes);
           
+          // Auto-sync to Google Drive if signed in
+          const syncStatus = googleDriveSync.getStatus();
+          if (syncStatus.isSignedIn) {
+            googleDriveSync.uploadNotes(updatedNotes).catch(console.error);
+          }
+          
           return {
             notes: updatedNotes,
             selectedNoteId: state.selectedNoteId === id ? null : state.selectedNoteId,
           };
         });
+      },
+
+      // Sync actions
+      syncNotes: async () => {
+        const syncStatus = googleDriveSync.getStatus();
+        if (!syncStatus.isSignedIn) return false;
+        
+        try {
+          const remoteNotes = await googleDriveSync.downloadNotes();
+          if (remoteNotes) {
+            set((state) => {
+              const mergedNotes = mergeNotes(state.notes, remoteNotes);
+              storage.saveNotes(mergedNotes);
+              return { notes: mergedNotes };
+            });
+          }
+          
+          // Upload current notes after merge
+          const currentState = get();
+          return await googleDriveSync.uploadNotes(currentState.notes);
+        } catch (error) {
+          console.error('Sync failed:', error);
+          return false;
+        }
       },
 
       selectNote: (id: string | null) => {

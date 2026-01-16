@@ -6,6 +6,7 @@ import { useNoteStore, useFilteredNotes } from '@/store';
 import { formatDate, truncateText } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
+import { SyncStatus } from './SyncStatus';
 
 export function NoteList() {
   const [isCreating, setIsCreating] = useState(false);
@@ -98,6 +99,7 @@ export function NoteList() {
             {getSortIcon()}
           </button>
           <ThemeToggle />
+          <SyncStatus />
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
 
@@ -10,17 +10,8 @@ interface LayoutProps {
 }
 
 export function Layout({ children, className }: LayoutProps) {
-  const [isMounted, setIsMounted] = useState(false);
   const isTablet = useMediaQuery('(min-width: 768px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className={cn(

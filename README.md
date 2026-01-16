@@ -49,10 +49,9 @@ A modern, tablet-first, installable note-taking application built with Next.js a
    cp .env.example .env.local
    ```
    
-   Edit `.env.local` and add your Google credentials:
+   Edit `.env.local` and add your Google Client ID:
    ```env
    NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id_here
-   NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
    ```
 
 4. Run the development server:
@@ -73,7 +72,8 @@ A modern, tablet-first, installable note-taking application built with Next.js a
    - Add authorized JavaScript origins:
      - `http://localhost:3000` (development)
      - `https://your-domain.com` (production)
-5. Copy the Client ID and API Key to your `.env.local` file
+5. Copy the **Client ID** to your `.env.local` file
+6. No API key required - uses OAuth authentication only
 
 ## Building for Production
 

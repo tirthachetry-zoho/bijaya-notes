@@ -16,7 +16,6 @@ export interface SyncStatus {
 
 export interface SyncConfig {
   clientId: string;
-  apiKey: string;
   discoveryDocs: string[];
   scope: string;
 }
@@ -34,7 +33,6 @@ class GoogleDriveSync {
   constructor() {
     this.config = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
       discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
       scope: 'https://www.googleapis.com/auth/drive.file',
     };
@@ -44,9 +42,9 @@ class GoogleDriveSync {
   async initialize(): Promise<void> {
     try {
       // Check if credentials are provided
-      if (!this.config.clientId || !this.config.apiKey) {
-        console.warn('Google Drive credentials not provided. Sync functionality will be disabled.');
-        this.status.error = 'Google Drive credentials not configured';
+      if (!this.config.clientId) {
+        console.warn('Google Drive client ID not provided. Sync functionality will be disabled.');
+        this.status.error = 'Google Drive client ID not configured';
         this.notifyListeners();
         return;
       }
@@ -80,7 +78,6 @@ class GoogleDriveSync {
 
   private async initializeGapiClient(): Promise<void> {
     await window.gapi.client.init({
-      apiKey: this.config.apiKey,
       clientId: this.config.clientId,
       discoveryDocs: this.config.discoveryDocs,
       scope: this.config.scope,

@@ -8,8 +8,8 @@ export const storage = {
     try {
       const serializedNotes = JSON.stringify(notes.map(note => ({
         ...note,
-        createdAt: note.createdAt.toISOString(),
-        updatedAt: note.updatedAt.toISOString(),
+        createdAt: note.createdAt instanceof Date ? note.createdAt.toISOString() : note.createdAt,
+        updatedAt: note.updatedAt instanceof Date ? note.updatedAt.toISOString() : note.updatedAt,
       })));
       localStorage.setItem(STORAGE_KEY, serializedNotes);
     } catch (error) {
@@ -26,8 +26,8 @@ export const storage = {
       const notes = JSON.parse(serializedNotes);
       return notes.map((note: any) => ({
         ...note,
-        createdAt: new Date(note.createdAt),
-        updatedAt: new Date(note.updatedAt),
+        createdAt: note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt),
+        updatedAt: note.updatedAt instanceof Date ? note.updatedAt : new Date(note.updatedAt),
       }));
     } catch (error) {
       console.error('Failed to load notes from localStorage:', error);

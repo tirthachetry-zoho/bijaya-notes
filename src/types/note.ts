@@ -27,7 +27,6 @@ export interface NoteActions {
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: 'updatedAt' | 'createdAt' | 'title') => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
-  syncNotes: () => Promise<boolean>;
 }
 
 export type NoteStore = NoteListState & NoteActions;

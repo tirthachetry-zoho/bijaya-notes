@@ -7,7 +7,6 @@ import { NoteEditor } from '@/components/NoteEditor';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { useNoteStore, useSelectedNote } from '@/store';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { googleDriveSync } from '@/lib/googleDriveSync';
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,11 +20,6 @@ export default function Home() {
       setIsSidebarOpen(false);
     }
   }, [selectedNote, isTablet]);
-
-  // Initialize Google Drive sync
-  useEffect(() => {
-    googleDriveSync.initialize().catch(console.error);
-  }, []);
 
   const handleSidebarClose = () => {
     setIsSidebarOpen(false);

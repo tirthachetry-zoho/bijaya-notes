@@ -11,7 +11,6 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - 📱 **Tablet-first responsive design** with split-view layout
 - 🌙 **Dark/Light theme support** with system preference detection
 - 📲 **Installable PWA** - works offline and can be installed on tablets
-- ☁️ **Google Drive sync** - sync your notes across devices with conflict resolution
 - 🎯 **Touch-friendly interface** with 44px minimum tap targets
 - 🔄 **Offline-first** - no internet connection required
 
@@ -29,7 +28,6 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 ### Prerequisites
 
 - Node.js 18+ and npm
-- Google Cloud Project (for sync functionality)
 
 ### Installation
 
@@ -44,44 +42,12 @@ A modern, tablet-first, installable note-taking application built with Next.js a
    npm install
    ```
 
-3. Set up Google Drive sync (optional):
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   The app works immediately in demo mode. To enable real sync:
-   ```env
-   NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id_here
-   ```
-
-4. Run the development server:
+3. Run the development server:
    ```bash
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Usage
-
-### Demo Mode (No Configuration Required)
-
-The app works immediately out of the box! Google Drive sync will show in "Demo Mode" until you configure your Google Client ID. You can still use all note-taking features locally.
-
-### Google Drive Setup (Optional)
-
-To enable real sync across devices:
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the **Google Drive API**
-4. Create OAuth 2.0 credentials:
-   - Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
-   - Select "Web application"
-   - Add authorized JavaScript origins:
-     - `http://localhost:3000` (development)
-     - `https://your-domain.com` (production)
-5. Copy the **Client ID** to your `.env.local` file
-6. No API key required - uses OAuth authentication only
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Building for Production
 

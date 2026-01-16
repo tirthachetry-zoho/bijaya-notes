@@ -119,9 +119,9 @@ export function NoteEditor() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex-shrink-0 p-4 border-b border-border">
+      <div className="flex-shrink-0 p-3 sm:p-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             {isMobile && (
               <button
                 onClick={handleBack}
@@ -136,16 +136,16 @@ export function NoteEditor() {
               value={title}
               onChange={handleTitleChange}
               placeholder="Note title..."
-              className="flex-1 text-lg font-medium bg-transparent border-none outline-none placeholder-muted-foreground touch-manipulation min-h-[44px]"
+              className="flex-1 text-lg sm:text-xl font-medium bg-transparent border-none outline-none placeholder-muted-foreground touch-manipulation min-h-[44px] py-2"
             />
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {isSaving && (
-              <span className="text-xs text-muted-foreground">Saving...</span>
+              <span className="text-xs text-muted-foreground px-2">Saving...</span>
             )}
             {lastSaved && !isSaving && (
-              <span className="text-xs text-muted-foreground hidden sm:inline">
+              <span className="text-xs text-muted-foreground hidden sm:inline px-2">
                 Saved {formatDate(lastSaved)}
               </span>
             )}
@@ -160,7 +160,7 @@ export function NoteEditor() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-3 sm:p-4">
         <textarea
           value={content}
           onChange={handleContentChange}
@@ -168,7 +168,10 @@ export function NoteEditor() {
           className="w-full h-full bg-transparent border-none outline-none resize-none placeholder-muted-foreground text-base leading-relaxed touch-manipulation"
           style={{
             minHeight: '200px',
+            fontSize: '16px', // Prevents zoom on iOS
             fontFamily: 'system-ui, -apple-system, sans-serif',
+            lineHeight: '1.6',
+            padding: '8px 0', // Better spacing
           }}
         />
       </div>

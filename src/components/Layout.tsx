@@ -61,8 +61,9 @@ export function Sidebar({ children, className, isOpen, onClose }: SidebarProps) 
         
         {/* Mobile sidebar */}
         <div className={cn(
-          'fixed left-0 top-0 h-full w-80 bg-background border-r border-border z-50 transform transition-transform duration-300 ease-in-out lg:hidden',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          'fixed left-0 top-0 h-full bg-background border-r border-border z-50 transform transition-transform duration-300 ease-in-out lg:hidden',
+          isOpen ? 'translate-x-0' : '-translate-x-full',
+          'w-full max-w-sm' // Full width on small screens, max width on larger
         )}>
           <div className="h-full overflow-y-auto">
             {children}

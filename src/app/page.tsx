@@ -43,14 +43,23 @@ export default function Home() {
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
 
-      {/* Mobile menu button - only show when no note is selected */}
-      {!isTablet && !selectedNote && (
-        <div className="fixed bottom-4 left-4 z-40 md:hidden">
+      {/* Mobile floating action button */}
+      {!isTablet && (
+        <div className="fixed bottom-6 right-6 z-40 md:hidden">
           <button
-            onClick={() => setIsSidebarOpen(true)}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg shadow-lg hover:bg-primary/90 transition-colors touch-manipulation min-h-[44px]"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 transition-all duration-200 touch-manipulation flex items-center justify-center"
+            aria-label={selectedNote ? "Show notes" : "Create note"}
           >
-            ☰ Notes
+            {selectedNote ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            )}
           </button>
         </div>
       )}

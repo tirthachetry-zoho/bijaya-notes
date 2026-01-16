@@ -57,12 +57,12 @@ export function NoteList() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex-shrink-0 p-4 border-b border-border">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-semibold text-foreground">Bijaya Notes</h1>
+      <div className="flex-shrink-0 p-3 sm:p-4 border-b border-border">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <h1 className="text-lg sm:text-xl font-semibold text-foreground">Bijaya Notes</h1>
           <button
             onClick={handleCreateNote}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors touch-manipulation min-h-[44px]"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors touch-manipulation min-h-[44px]"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">New Note</span>
@@ -70,30 +70,30 @@ export function NoteList() {
         </div>
 
         {/* Search */}
-        <div className="relative mb-4">
+        <div className="relative mb-3 sm:mb-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search notes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent touch-manipulation min-h-[44px]"
+            className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent touch-manipulation min-h-[44px] text-base"
           />
         </div>
 
         {/* Sort controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
           <button
             onClick={cycleSortBy}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors touch-manipulation min-h-[44px]"
+            className="flex items-center gap-2 px-2 sm:px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors touch-manipulation min-h-[44px]"
           >
             {sortBy === 'title' && <Type className="w-4 h-4" />}
             {(sortBy === 'createdAt' || sortBy === 'updatedAt') && <Calendar className="w-4 h-4" />}
-            <span>{getSortLabel()}</span>
+            <span className="hidden xs:inline sm:inline">{getSortLabel()}</span>
           </button>
           <button
             onClick={toggleSortOrder}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors touch-manipulation min-h-[44px]"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors touch-manipulation min-h-[44px]"
           >
             {getSortIcon()}
           </button>
@@ -133,7 +133,7 @@ export function NoteList() {
                 key={note.id}
                 onClick={() => selectNote(note.id)}
                 className={cn(
-                  'w-full text-left p-4 hover:bg-muted/50 transition-colors touch-manipulation min-h-[44px]',
+                  'w-full text-left p-3 sm:p-4 hover:bg-muted/50 transition-colors touch-manipulation min-h-[44px]',
                   selectedNoteId === note.id && 'bg-muted border-l-4 border-primary'
                 )}
               >

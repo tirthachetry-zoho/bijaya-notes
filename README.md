@@ -12,11 +12,10 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - 📋 **Lists** - bullet and numbered lists with proper formatting
 - 💬 **Blockquotes** - styled quote blocks for emphasis
 - 📊 **Tables** - insert simple tables with customizable rows and columns
-- 📱 **Tablet-first responsive design** with split-view layout
-- 🌙 **Dark/Light theme support** with system preference detection
-- 📲 **Installable PWA** - works offline and can be installed on tablets
+-  **Installable PWA** - works offline and can be installed on tablets
 - 🎯 **Touch-friendly interface** with 44px minimum tap targets
 - 🔄 **Offline-first** - no internet connection required
+- 💾 **Backup & Restore** - Export notes as JSON and import backup files
 
 ## Tech Stack
 
@@ -27,6 +26,25 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - **Rich Text Editor**: TipTap with extensions for formatting
 - **PWA**: next-pwa with service worker
 - **Icons**: Lucide React
+
+## Backup & Restore
+
+Your notes are automatically saved to local storage, but you can also create manual backups:
+
+### Export Notes
+1. Click **"Export Notes"** button in the Backup & Restore section
+2. Download a JSON file with all your notes
+3. Save the backup file to a safe location
+
+### Import Notes
+1. Click **"Import Notes"** button in the Backup & Restore section
+2. Select a previously exported JSON backup file
+3. All notes from the backup will be added to your existing notes
+
+### Why Use Backup?
+- **Device Migration**: Transfer notes between devices
+- **Data Recovery**: Restore notes after clearing browser data
+- **Peace of Mind**: Keep an offline copy of important notes
 
 ## Getting Started
 

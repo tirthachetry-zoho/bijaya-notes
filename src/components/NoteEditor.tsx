@@ -6,6 +6,7 @@ import { useNoteStore, useSelectedNote } from '@/store';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { formatDate } from '@/lib/utils';
 import { RichTextEditor } from './RichTextEditor';
+import { NoteBackup } from './NoteBackup';
 
 export function NoteEditor() {
   const [title, setTitle] = useState('');
@@ -169,6 +170,14 @@ export function NoteEditor() {
           className="h-full"
         />
       </div>
+
+      {/* Backup Section */}
+      {selectedNote && (
+        <div className="border-t border-border p-3 sm:p-4">
+          <h3 className="text-sm font-medium text-muted-foreground mb-3">Backup & Restore</h3>
+          <NoteBackup />
+        </div>
+      )}
     </div>
   );
 }

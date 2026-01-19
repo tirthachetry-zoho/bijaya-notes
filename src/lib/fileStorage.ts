@@ -27,8 +27,8 @@ export class FileStorage {
       id: note.id,
       title: note.title,
       content: note.content,
-      createdAt: note.createdAt.toISOString(),
-      updatedAt: note.updatedAt.toISOString(),
+      createdAt: new Date(note.createdAt).toISOString(),
+      updatedAt: new Date(note.updatedAt).toISOString(),
     }));
 
     const folderStructure: FolderStructure = {
@@ -102,8 +102,8 @@ export class FileStorage {
       id: note.id,
       title: note.title,
       content: note.content,
-      createdAt: note.createdAt.toISOString(),
-      updatedAt: note.updatedAt.toISOString(),
+      createdAt: new Date(note.createdAt).toISOString(),
+      updatedAt: new Date(note.updatedAt).toISOString(),
     };
 
     const dataStr = JSON.stringify(fileSystemNote, null, 2);

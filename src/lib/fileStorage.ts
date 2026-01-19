@@ -125,6 +125,11 @@ export class FileStorage {
     estimatedSize: string;
     lastBackup?: string;
   } {
+    // Handle SSR - return default values if localStorage is not available
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return { totalNotes: 0, estimatedSize: '0 KB' };
+    }
+
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (!stored) {
       return { totalNotes: 0, estimatedSize: '0 KB' };

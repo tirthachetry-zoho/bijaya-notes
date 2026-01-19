@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Download, Upload, FileText, AlertCircle, FolderOpen, HardDrive, Info } from 'lucide-react';
 import { useNoteStore } from '@/store';
 import { cn } from '@/lib/utils';
@@ -10,7 +10,21 @@ export function NoteBackup() {
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<'success' | 'error' | null>(null);
   const [importMessage, setImportMessage] = useState<string>('');
+  const [storageInfo, setStorageInfo] = useState<{
+    totalNotes: number;
+    estimatedSize: string;
+    lastBackup?: string;
+  }>({
+    totalNotes: 0,
+    estimatedSize: '0 KB',
+    lastBackup: undefined,
+  });
   const { notes, createNote } = useNoteStore();
+
+  // Update storage info on client side only
+  useEffect(() => {
+    setStorageInfo(FileStorage.getStorageInfo());
+  }, [notes]);
 
   const exportAllNotes = () => {
     FileStorage.exportNotes(notes);
@@ -52,8 +66,6 @@ export function NoteBackup() {
       setIsImporting(false);
     }
   };
-
-  const storageInfo = FileStorage.getStorageInfo();
 
   return (
     <div className="space-y-6">

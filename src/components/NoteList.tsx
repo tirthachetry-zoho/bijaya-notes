@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Plus, SortAsc, SortDesc, Calendar, Type } from 'lucide-react';
+import { Search, Plus, SortAsc, SortDesc, Calendar, Type, Shield } from 'lucide-react';
 import { useNoteStore, useFilteredNotes } from '@/store';
 import { formatDate, truncateText } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
+import Link from 'next/link';
 
 export function NoteList() {
   const [isCreating, setIsCreating] = useState(false);
@@ -60,13 +61,22 @@ export function NoteList() {
       <div className="flex-shrink-0 p-3 sm:p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <h1 className="text-lg sm:text-xl font-semibold text-foreground">Bijaya Notes</h1>
-          <button
-            onClick={handleCreateNote}
-            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors touch-manipulation min-h-[44px]"
-          >
-            <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">New Note</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <Link 
+              href="/backup" 
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 transition-colors touch-manipulation min-h-[44px]"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="hidden sm:inline">Backup</span>
+            </Link>
+            <button
+              onClick={handleCreateNote}
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors touch-manipulation min-h-[44px]"
+            >
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">New Note</span>
+            </button>
+          </div>
         </div>
 
         {/* Search */}

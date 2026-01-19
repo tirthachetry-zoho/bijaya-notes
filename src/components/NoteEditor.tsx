@@ -6,8 +6,6 @@ import { useNoteStore, useSelectedNote } from '@/store';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { formatDate } from '@/lib/utils';
 import { RichTextEditor } from './RichTextEditor';
-import Link from 'next/link';
-import { Shield } from 'lucide-react';
 
 export function NoteEditor() {
   const [title, setTitle] = useState('');
@@ -171,19 +169,6 @@ export function NoteEditor() {
           className="h-full"
         />
       </div>
-
-      {/* Backup Link */}
-      {selectedNote && (
-        <div className="border-t border-border p-3 sm:p-4">
-          <Link 
-            href="/backup" 
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Shield className="w-4 h-4" />
-            Backup & Restore Notes
-          </Link>
-        </div>
-      )}
     </div>
   );
 }

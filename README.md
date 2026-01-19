@@ -8,6 +8,10 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - 🔍 **Search functionality** across note titles and content
 - 📊 **Sort notes** by title, creation date, or last modified date
 - 💾 **Auto-save** while typing with 1-second debounce
+- 🎨 **Rich text formatting** - bold, italic, strikethrough, code, highlight
+- 📋 **Lists** - bullet and numbered lists with proper formatting
+- 💬 **Blockquotes** - styled quote blocks for emphasis
+- 📊 **Tables** - insert simple tables with customizable rows and columns
 - 📱 **Tablet-first responsive design** with split-view layout
 - 🌙 **Dark/Light theme support** with system preference detection
 - 📲 **Installable PWA** - works offline and can be installed on tablets
@@ -20,6 +24,7 @@ A modern, tablet-first, installable note-taking application built with Next.js a
 - **Styling**: Tailwind CSS with CSS variables for theming
 - **State Management**: Zustand with persistence
 - **Storage**: LocalStorage for offline-first behavior
+- **Rich Text Editor**: TipTap with extensions for formatting
 - **PWA**: next-pwa with service worker
 - **Icons**: Lucide React
 

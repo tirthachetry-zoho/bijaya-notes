@@ -5,6 +5,7 @@ import { Trash2, ArrowLeft, Save } from 'lucide-react';
 import { useNoteStore, useSelectedNote } from '@/store';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { formatDate } from '@/lib/utils';
+import { RichTextEditor } from './RichTextEditor';
 
 export function NoteEditor() {
   const [title, setTitle] = useState('');
@@ -98,8 +99,8 @@ export function NoteEditor() {
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+  const handleContentChange = (newContent: string) => {
+    setContent(newContent);
   };
 
   if (!selectedNote) {
@@ -161,18 +162,11 @@ export function NoteEditor() {
 
       {/* Content */}
       <div className="flex-1 p-3 sm:p-4">
-        <textarea
-          value={content}
+        <RichTextEditor
+          content={content}
           onChange={handleContentChange}
           placeholder="Start writing your note..."
-          className="w-full h-full bg-transparent border-none outline-none resize-none placeholder-muted-foreground text-base leading-relaxed touch-manipulation"
-          style={{
-            minHeight: '200px',
-            fontSize: '16px', // Prevents zoom on iOS
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            lineHeight: '1.6',
-            padding: '8px 0', // Better spacing
-          }}
+          className="h-full"
         />
       </div>
     </div>

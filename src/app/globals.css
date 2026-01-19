@@ -21,6 +21,8 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
+    --active-format: 200 90% 96%;
+    --active-format-foreground: 200 80% 40%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -49,6 +51,8 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+    --active-format: 200 80% 40%;
+    --active-format-foreground: 200 90% 96%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -121,4 +125,206 @@ textarea:focus-visible {
 @keyframes slideUp {
   0% { transform: translateY(10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Rich Text Editor Styles */
+.ProseMirror {
+  outline: none;
+  padding: 8px 0;
+  min-height: 200px;
+}
+
+/* Better text selection colors */
+.ProseMirror ::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary-foreground));
+}
+
+.ProseMirror ::-moz-selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary-foreground));
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.ProseMirror h1 { font-size: 2em; }
+.ProseMirror h2 { font-size: 1.5em; }
+.ProseMirror h3 { font-size: 1.25em; }
+
+.ProseMirror p {
+  margin: 0.5em 0;
+  line-height: 1.6;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.ProseMirror li {
+  margin: 0.25em 0;
+}
+
+.ProseMirror blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+.ProseMirror code {
+  background: hsl(var(--muted));
+  padding: 0.125em 0.25em;
+  border-radius: 0.25em;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.875em;
+}
+
+.ProseMirror pre {
+  background: hsl(var(--muted));
+  padding: 1em;
+  border-radius: 0.5em;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.ProseMirror mark {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  padding: 0.125em 0.25em;
+  border-radius: 0.25em;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+/* Highlight formatted text when selected */
+.ProseMirror strong::selection,
+.ProseMirror em::selection,
+.ProseMirror u::selection,
+.ProseMirror s::selection,
+.ProseMirror code::selection,
+.ProseMirror mark::selection {
+  background-color: hsl(var(--primary) / 0.3);
+  color: hsl(var(--primary-foreground));
+}
+
+.ProseMirror strong::-moz-selection,
+.ProseMirror em::-moz-selection,
+.ProseMirror u::-moz-selection,
+.ProseMirror s::-moz-selection,
+.ProseMirror code::-moz-selection,
+.ProseMirror mark::-moz-selection {
+  background-color: hsl(var(--primary) / 0.3);
+  color: hsl(var(--primary-foreground));
+}
+
+.ProseMirror [style*="text-align: left"] {
+  text-align: left;
+}
+
+.ProseMirror [style*="text-align: center"] {
+  text-align: center;
+}
+
+.ProseMirror [style*="text-align: right"] {
+  text-align: right;
+}
+
+/* Table Styles */
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1em 0;
+  overflow: hidden;
+  border: 2px solid hsl(var(--border));
+  border-radius: 0.5em;
+  background-color: hsl(var(--background));
+}
+
+.ProseMirror table td,
+.ProseMirror table th {
+  min-width: 1em;
+  border: 1px solid hsl(var(--border));
+  padding: 12px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  background-color: hsl(var(--card));
+}
+
+.ProseMirror table th {
+  font-weight: 600;
+  text-align: left;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--card-foreground));
+}
+
+.ProseMirror table .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(59, 130, 246, 0.1);
+  pointer-events: none;
+}
+
+.ProseMirror table .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: hsl(var(--primary));
+  pointer-events: none;
+}
+
+.ProseMirror table p {
+  margin: 0;
+}
+
+.ProseMirror .tableWrapper {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+/* Simple table specific styling */
+.ProseMirror .simple-table {
+  border: 2px solid hsl(var(--border)) !important;
+  background: hsl(var(--card)) !important;
+  box-shadow: 0 2px 4px hsl(var(--border) / 0.1);
+}
+
+.ProseMirror .simple-table th {
+  background: hsl(var(--muted)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-bottom: 2px solid hsl(var(--border)) !important;
+}
+
+.ProseMirror .simple-table td {
+  background: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+/* Dark mode table styles */
+.dark .ProseMirror table td,
+.dark .ProseMirror table th {
+  background-color: hsl(var(--card));
+}
+
+.dark .ProseMirror table th {
+  background-color: hsl(var(--muted));
 }

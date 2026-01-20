@@ -1,92 +1,88 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import { Note, NoteStore, NoteFormData } from '@/types';
 import { generateId } from '@/lib/utils';
 import { storage } from '@/lib/storage';
 
 export const useNoteStore = create<NoteStore>()(
-  persist(
-    (set, get) => ({
-      // Initial state
-      notes: [],
-      selectedNoteId: null,
-      searchQuery: '',
-      sortBy: 'updatedAt',
-      sortOrder: 'desc',
+  (set, get) => ({
+    // Initial state - empty initially, will be loaded on client
+    notes: [],
+    selectedNoteId: null,
+    searchQuery: '',
+    sortBy: 'updatedAt',
+    sortOrder: 'desc',
 
-      // Actions
-      createNote: (data: NoteFormData) => {
-        const newNote: Note = {
-          id: generateId(),
-          title: data.title || 'Untitled Note',
-          content: data.content || '',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+    // Actions
+    createNote: (data: NoteFormData) => {
+      const newNote: Note = {
+        id: generateId(),
+        title: data.title || 'Untitled Note',
+        content: data.content || '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      set((state) => {
+        const updatedNotes = [newNote, ...state.notes];
+        storage.saveNotes(updatedNotes);
+        return {
+          notes: updatedNotes,
+          selectedNoteId: newNote.id,
         };
+      });
+    },
 
-        set((state) => {
-          const updatedNotes = [newNote, ...state.notes];
-          storage.saveNotes(updatedNotes);
-          return {
-            notes: updatedNotes,
-            selectedNoteId: newNote.id,
-          };
-        });
-      },
+    updateNote: (id: string, data: Partial<NoteFormData>) => {
+      set((state) => {
+        const updatedNotes = state.notes.map((note) =>
+          note.id === id
+            ? {
+                ...note,
+                ...data,
+                updatedAt: new Date(),
+              }
+            : note
+        );
+        storage.saveNotes(updatedNotes);
+        return { notes: updatedNotes };
+      });
+    },
 
-      updateNote: (id: string, data: Partial<NoteFormData>) => {
-        set((state) => {
-          const updatedNotes = state.notes.map((note) =>
-            note.id === id
-              ? {
-                  ...note,
-                  ...data,
-                  updatedAt: new Date(),
-                }
-              : note
-          );
-          storage.saveNotes(updatedNotes);
-          return { notes: updatedNotes };
-        });
-      },
+    deleteNote: (id: string) => {
+      set((state) => {
+        const updatedNotes = state.notes.filter((note) => note.id !== id);
+        storage.saveNotes(updatedNotes);
+        return {
+          notes: updatedNotes,
+          selectedNoteId: state.selectedNoteId === id ? null : state.selectedNoteId,
+        };
+      });
+    },
 
-      deleteNote: (id: string) => {
-        set((state) => {
-          const updatedNotes = state.notes.filter((note) => note.id !== id);
-          storage.saveNotes(updatedNotes);
-          return {
-            notes: updatedNotes,
-            selectedNoteId: state.selectedNoteId === id ? null : state.selectedNoteId,
-          };
-        });
-      },
+    selectNote: (id: string | null) => {
+      set({ selectedNoteId: id });
+    },
 
-      selectNote: (id: string | null) => {
-        set({ selectedNoteId: id });
-      },
+    setSearchQuery: (query: string) => {
+      set({ searchQuery: query });
+    },
 
-      setSearchQuery: (query: string) => {
-        set({ searchQuery: query });
-      },
+    setSortBy: (sortBy: 'updatedAt' | 'createdAt' | 'title') => {
+      set({ sortBy });
+    },
 
-      setSortBy: (sortBy: 'updatedAt' | 'createdAt' | 'title') => {
-        set({ sortBy });
-      },
+    setSortOrder: (order: 'asc' | 'desc') => {
+      set({ sortOrder: order });
+    },
 
-      setSortOrder: (order: 'asc' | 'desc') => {
-        set({ sortOrder: order });
-      },
-    }),
-    {
-      name: 'bijaya-notes-store',
-      storage: createJSONStorage(() => localStorage),
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          storage.saveNotes(state.notes);
-        }
-      },
-    }
-  )
+    // Initialize notes from storage
+    initializeNotes: () => {
+      if (typeof window !== 'undefined') {
+        const notes = storage.loadNotes();
+        set({ notes });
+      }
+    },
+  })
 );
 
 // Selectors for computed values

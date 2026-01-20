@@ -7,12 +7,16 @@ import { NoteEditor } from '@/components/NoteEditor';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { useNoteStore, useSelectedNote } from '@/store';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useInitializeNotes } from '@/hooks/useInitializeNotes';
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const selectedNote = useSelectedNote();
   const { selectNote } = useNoteStore();
   const isTablet = useMediaQuery('(min-width: 768px)');
+  
+  // Initialize notes from localStorage on client side
+  useInitializeNotes();
 
   // Close sidebar on mobile when selecting a note
   useEffect(() => {

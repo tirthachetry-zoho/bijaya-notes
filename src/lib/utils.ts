@@ -35,3 +35,20 @@ export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength).trim() + '...';
 }
+
+export function stripHtml(html: string): string {
+  // Create a temporary div element to parse HTML
+  if (typeof window === 'undefined') {
+    // Server-side fallback: simple regex to remove HTML tags
+    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  }
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent || tempDiv.innerText || '';
+}
+
+export function truncateHtml(html: string, maxLength: number): string {
+  const plainText = stripHtml(html);
+  return truncateText(plainText, maxLength);
+}

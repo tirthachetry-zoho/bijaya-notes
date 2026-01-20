@@ -134,10 +134,6 @@ export function RichTextEditor({ content, onChange, placeholder = "Start writing
   const [isMounted, setIsMounted] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -179,6 +175,21 @@ export function RichTextEditor({ content, onChange, placeholder = "Start writing
       },
     },
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Update editor content when the content prop changes
+  useEffect(() => {
+    if (editor && isMounted) {
+      // Only update if the content is different to avoid cursor issues
+      const currentContent = editor.getHTML();
+      if (currentContent !== content) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [content, editor, isMounted]);
 
   if (!isMounted) {
     return (

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Search, Plus, SortAsc, SortDesc, Calendar, Type, Shield } from 'lucide-react';
 import { useNoteStore, useFilteredNotes } from '@/store';
-import { formatDate, truncateText } from '@/lib/utils';
+import { formatDate, truncateHtml } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
 import Link from 'next/link';
@@ -153,7 +153,7 @@ export function NoteList() {
                   </h3>
                   {note.content && (
                     <p className="text-sm text-muted-foreground line-clamp-2">
-                      {truncateText(note.content, 100)}
+                      {truncateHtml(note.content, 100)}
                     </p>
                   )}
                   <p className="text-xs text-muted-foreground">

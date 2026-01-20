@@ -5,6 +5,8 @@ const STORAGE_KEY = 'bijaya-notes';
 export const storage = {
   // Save all notes to localStorage
   saveNotes: (notes: Note[]): void => {
+    if (typeof window === 'undefined') return; // Skip on server-side
+    
     try {
       const serializedNotes = JSON.stringify(notes.map(note => ({
         ...note,
@@ -19,6 +21,8 @@ export const storage = {
 
   // Load all notes from localStorage
   loadNotes: (): Note[] => {
+    if (typeof window === 'undefined') return []; // Skip on server-side
+    
     try {
       const serializedNotes = localStorage.getItem(STORAGE_KEY);
       if (!serializedNotes) return [];
@@ -37,6 +41,8 @@ export const storage = {
 
   // Save app preferences
   savePreferences: (preferences: Record<string, any>): void => {
+    if (typeof window === 'undefined') return; // Skip on server-side
+    
     try {
       localStorage.setItem('bijaya-notes-preferences', JSON.stringify(preferences));
     } catch (error) {
@@ -46,6 +52,8 @@ export const storage = {
 
   // Load app preferences
   loadPreferences: (): Record<string, any> => {
+    if (typeof window === 'undefined') return {}; // Skip on server-side
+    
     try {
       const serialized = localStorage.getItem('bijaya-notes-preferences');
       return serialized ? JSON.parse(serialized) : {};
@@ -57,6 +65,8 @@ export const storage = {
 
   // Clear all data
   clearAll: (): void => {
+    if (typeof window === 'undefined') return; // Skip on server-side
+    
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem('bijaya-notes-preferences');
